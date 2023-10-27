@@ -12,13 +12,13 @@ class URLSessionHTTPClientTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        
+        print("called setup")
         URLProtocolStub.startInterceptingRequests()
     }
     
     override func tearDown() {
         super.tearDown()
-        
+        print("called teardown")
         URLProtocolStub.stopInterceptingRequests()
     }
     
@@ -174,7 +174,6 @@ class URLSessionHTTPClientTests: XCTestCase {
         }
         
         override class func canInit(with request: URLRequest) -> Bool {
-            requestObserver?(request)
             return true
         }
         
