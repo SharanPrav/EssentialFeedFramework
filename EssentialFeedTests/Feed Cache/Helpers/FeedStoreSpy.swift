@@ -58,4 +58,8 @@ class FeedStoreSpy: FeedStore {
     func completeRetreival(with error: Error, at index: Int = 0) {
         retreivalCompletions[index](error)
     }
+    
+    func completeRetreivalwithEmptyCache(at index: Int = 0) {
+        retreivalCompletions[index](nil)
+    }
 }
