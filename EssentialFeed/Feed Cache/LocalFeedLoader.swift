@@ -20,7 +20,7 @@ public final class LocalFeedLoader {
     }
         
     public func save(_ feed: [FeedImage], completion: @escaping (SaveResult) -> Void) {
-        store.deleteCaheFeed { [weak self] error in
+        store.deleteCachedFeed { [weak self] error in
             guard let self = self else { return }
             
             if let cacheDeletionError = error {
@@ -32,13 +32,22 @@ public final class LocalFeedLoader {
     }
     
     public func load(completion: @escaping (LoadFeedResult)-> Void) {
-        self.store.retrieve { [unowned self] result in
+        store.retrieve { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case let (.failure(error)):
+                self.store.deleteCachedFeed { _ in }
                 completion(.failure(error))
+                
             case let .found(feed, timestamp) where self.validate(timestamp):
                 completion(.success(feed.toModels()))
-            case .found, .empty:
+            
+            case .found:
+                self.store.deleteCachedFeed { _ in }
+                completion(.success([]))
+                
+            case .empty:
                 completion(.success([]))
             }
         }

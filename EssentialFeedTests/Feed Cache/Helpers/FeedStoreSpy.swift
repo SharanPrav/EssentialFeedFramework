@@ -22,11 +22,11 @@ class FeedStoreSpy: FeedStore {
     private var deletionCompletions = [DeletionCompletion]()
     private var insertionCompletions = [DeletionCompletion]()
     private var retreivalCompletions = [RetreivalCompletion]()
-    private(set) var receivedMesages = [ReceivedMessage]()
+    private(set) var receivedMessages = [ReceivedMessage]()
     
-    func deleteCaheFeed(completion: @escaping DeletionCompletion) {
+    func deleteCachedFeed(completion: @escaping DeletionCompletion) {
         deletionCompletions.append(completion)
-        receivedMesages.append(.deleteCachedFeed)
+        receivedMessages.append(.deleteCachedFeed)
     }
     
     func completeDeletion(with error: Error, at index: Int = 0) {
@@ -39,7 +39,7 @@ class FeedStoreSpy: FeedStore {
     
     func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
         insertionCompletions.append(completion)
-        receivedMesages.append(.insert(feed, timestamp))
+        receivedMessages.append(.insert(feed, timestamp))
     }
     
     func completeInsertion(with error: Error, at index: Int = 0) {
@@ -52,7 +52,7 @@ class FeedStoreSpy: FeedStore {
     
     func retrieve(completion: @escaping RetreivalCompletion) {
         retreivalCompletions.append(completion)
-        receivedMesages.append(.retrieve)
+        receivedMessages.append(.retrieve)
     }
     
     func completeRetreival(with error: Error, at index: Int = 0) {
@@ -63,7 +63,7 @@ class FeedStoreSpy: FeedStore {
         retreivalCompletions[index](.found(feed: feed, timestamp: timestamp))
     }
     
-    func completeRetreivalwithEmptyCache(at index: Int = 0) {
+    func completeRetreivalWithEmptyCache(at index: Int = 0) {
         retreivalCompletions[index](.empty)
     }
 }
