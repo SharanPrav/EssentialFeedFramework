@@ -34,6 +34,7 @@
 		B6D1064B2AF80580001512F7 /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1064A2AF80580001512F7 /* SharedTestHelpers.swift */; };
 		B6D1064D2AFBD9AD001512F7 /* FeedCachePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1064C2AFBD9AD001512F7 /* FeedCachePolicy.swift */; };
 		B6D1064F2B057514001512F7 /* CodableFeedStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1064E2B057514001512F7 /* CodableFeedStoreTests.swift */; };
+		B6D106512B0A77E9001512F7 /* CodableFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D106502B0A77E9001512F7 /* CodableFeedStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		B6D1064A2AF80580001512F7 /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
 		B6D1064C2AFBD9AD001512F7 /* FeedCachePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCachePolicy.swift; sourceTree = "<group>"; };
 		B6D1064E2B057514001512F7 /* CodableFeedStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFeedStoreTests.swift; sourceTree = "<group>"; };
+		B6D106502B0A77E9001512F7 /* CodableFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFeedStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +220,7 @@
 				B6D106392AEE9411001512F7 /* FeedStore.swift */,
 				B6D1063B2AEEB3B9001512F7 /* LocalFeedImage.swift */,
 				B6D1064C2AFBD9AD001512F7 /* FeedCachePolicy.swift */,
+				B6D106502B0A77E9001512F7 /* CodableFeedStore.swift */,
 			);
 			path = "Feed Cache";
 			sourceTree = "<group>";
@@ -377,6 +380,7 @@
 				B6D105ED2AEBFEDE001512F7 /* FeedImage.swift in Sources */,
 				B6D105CD2AEBFDFB001512F7 /* EssentialFeed.docc in Sources */,
 				B6D105E62AEBFE53001512F7 /* HTTPClient.swift in Sources */,
+				B6D106512B0A77E9001512F7 /* CodableFeedStore.swift in Sources */,
 				B6D1064D2AFBD9AD001512F7 /* FeedCachePolicy.swift in Sources */,
 				B6D106382AEE9379001512F7 /* LocalFeedLoader.swift in Sources */,
 				B6D106402AEEB549001512F7 /* RemoteFeedItem.swift in Sources */,
