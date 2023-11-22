@@ -8,7 +8,7 @@
 import XCTest
 import EssentialFeed
 
-class CodableFeedStoreTests: XCTestCase {
+class CodableFeedStoreTests: XCTestCase, FailableFeedStoreSpecs {
     
     override func setUp() {
         super.setUp()
@@ -34,18 +34,24 @@ class CodableFeedStoreTests: XCTestCase {
         expect(sut, toRetrieveTwice: .empty)
     }
     
+    func test_retrieve_hasNoSideEffectsOnNonEmptyCache() {
+        let sut = makeSUT()
+        
+        let feed = uniqueImageFeed().local
+        let timestamp = Date()
+        
+        insert((feed, timestamp), to: sut)
+        
+        expect(sut, toRetrieveTwice: .found(feed: feed, timestamp: timestamp))
+    }
+    
     func test_retrieve_deliversFoundValuesOnNonEmptyCache() {
         let sut = makeSUT()
         let feed = uniqueImageFeed().local
         let timestamp = Date()
-        let exp = expectation(description: "Wait for cache retrieval")
         
-        sut.insert(feed, timestamp: timestamp) { insertionError in
-            XCTAssertNil(insertionError, "Expected feed to be inserted successfully")
-                exp.fulfill()
-        }
+        let insertionError = insert((feed, timestamp: timestamp), to: sut)
         
-        wait(for: [exp], timeout: 1.0)
         expect(sut, toRetrieve: .found(feed: feed, timestamp: timestamp))
     }
     
@@ -65,6 +71,29 @@ class CodableFeedStoreTests: XCTestCase {
         try! "invalid data".write(to: storeURL, atomically: false, encoding: .utf8)
         
         expect(sut, toRetrieveTwice: .failure(anyError()))
+    }
+    
+    func test_insert_deliversNoErrorOnEmptyCache() {
+        let sut = makeSUT()
+
+        let feed = uniqueImageFeed().local
+        let timestamp = Date()
+        
+        let insertionError = insert((feed, timestamp: timestamp), to: sut)
+        
+        XCTAssertNil(insertionError, "Expected feed to be inserted successfully")
+    }
+    
+    func test_insert_deliversNoErrorOnNonEmptyCache() {
+        let sut = makeSUT()
+        insert((uniqueImageFeed().local, Date()), to: sut)
+        
+        let latestFeed = uniqueImageFeed().local
+        let latestTimestamp = Date()
+        
+        let insertionError = insert((latestFeed, latestTimestamp), to: sut)
+
+        XCTAssertNil(insertionError, "Expected feed to be inserted successfully")
     }
     
     func test_insert_overridesPreviouslyInsertedCacheValues() {
