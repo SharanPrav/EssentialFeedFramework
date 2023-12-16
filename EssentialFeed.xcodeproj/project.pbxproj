@@ -58,6 +58,8 @@
 		B6D1070A2B2A10B1001512F7 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1061E2AEC5C15001512F7 /* XCTestCase+MemoryLeakTracking.swift */; };
 		B6D1070C2B2E0C0B001512F7 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1070B2B2E0C0B001512F7 /* FeedViewController.swift */; };
 		B6D1070D2B2E0CB9001512F7 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1070B2B2E0C0B001512F7 /* FeedViewController.swift */; };
+		B6D1070F2B2E0D25001512F7 /* FeedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1070E2B2E0D25001512F7 /* FeedImageCell.swift */; };
+		B6D107102B2E0D25001512F7 /* FeedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D1070E2B2E0D25001512F7 /* FeedImageCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,6 +161,7 @@
 		B6D106F42B2A0E1F001512F7 /* EssentialFeediOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeediOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6D107022B2A0EC9001512F7 /* FeedViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewControllerTests.swift; sourceTree = "<group>"; };
 		B6D1070B2B2E0C0B001512F7 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		B6D1070E2B2E0D25001512F7 /* FeedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -404,6 +407,7 @@
 			isa = PBXGroup;
 			children = (
 				B6D1070B2B2E0C0B001512F7 /* FeedViewController.swift */,
+				B6D1070E2B2E0D25001512F7 /* FeedImageCell.swift */,
 			);
 			path = EssentialFeediOS;
 			sourceTree = "<group>";
@@ -721,6 +725,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6D1070C2B2E0C0B001512F7 /* FeedViewController.swift in Sources */,
+				B6D1070F2B2E0D25001512F7 /* FeedImageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,6 +734,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6D107032B2A0EC9001512F7 /* FeedViewControllerTests.swift in Sources */,
+				B6D107102B2E0D25001512F7 /* FeedImageCell.swift in Sources */,
 				B6D1070D2B2E0CB9001512F7 /* FeedViewController.swift in Sources */,
 				B6D1070A2B2A10B1001512F7 /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 			);
