@@ -437,8 +437,7 @@
 		B6D106EE2B2A0E1F001512F7 /* EssentialFeediOS */ = {
 			isa = PBXGroup;
 			children = (
-				B6D107272B2F3A00001512F7 /* View */,
-				B6D107262B2F39F8001512F7 /* Controllers */,
+				B6D1073A2B2F6707001512F7 /* Feed UI */,
 			);
 			path = EssentialFeediOS;
 			sourceTree = "<group>";
@@ -498,6 +497,15 @@
 				B6D107362B2F65B2001512F7 /* FeedViewControllerTests+Assertions.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		B6D1073A2B2F6707001512F7 /* Feed UI */ = {
+			isa = PBXGroup;
+			children = (
+				B6D107272B2F3A00001512F7 /* View */,
+				B6D107262B2F39F8001512F7 /* Controllers */,
+			);
+			path = "Feed UI";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
