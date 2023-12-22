@@ -1,30 +1,33 @@
 import UIKit
 import EssentialFeed
 
-final class FeedRefreshViewController: NSObject {
+public final class FeedRefreshViewController: NSObject, FeedLoadingView {
     
-    // It is supposed to be private(Set) but removed it because it has to be replaced with fake for testing. 
-    lazy var view = binded(UIRefreshControl())
+    // It is supposed to be private(Set) but removed it because it has to be replaced with fake for testing.
+    public lazy var view = loadView()
+    //lazy var view = binded(UIRefreshControl())
+    //private let viewModel: FeedViewModel
     
-    private let viewModel: FeedViewModel
+    private let presenter: FeedPresenter
 
-    init(viewModel: FeedViewModel) {
-        self.viewModel = viewModel
+    init(presenter: FeedPresenter) {
+        self.presenter = presenter
     }
         
     @objc func refresh() {
-        viewModel.loadFeed()
+        presenter.loadFeed()
     }
     
-    private func binded(_ view: UIRefreshControl) -> UIRefreshControl {
-        viewModel.onLoadingStateChange = { [weak self] isLoading in
-            if isLoading {
-                self?.view.beginRefreshing()
-            } else {
-                self?.view.endRefreshing()
-            }
+    func display(isLoading: Bool) {
+        if isLoading {
+            view.beginRefreshing()
+        } else {
+            view.endRefreshing()
         }
-        
+    }
+    
+    private func loadView() -> UIRefreshControl {
+        let view = UIRefreshControl()
         view.addTarget(self, action: #selector(refresh), for: .valueChanged)
         return view
     }
