@@ -8,7 +8,7 @@ public final class FeedUIComposer {
 //        let feedViewModel = FeedViewModel(feedLoader: feedLoader)
 //        let refreshController = FeedRefreshViewController(viewModel: feedViewModel)
         let presenter = FeedPresenter(feedLoader: feedLoader)
-        let refreshController = FeedRefreshViewController(presenter: presenter)
+        let refreshController = FeedRefreshViewController(loadFeed: presenter.loadFeed)
         let feedController = FeedViewController(refreshController: refreshController)
 //        feedViewModel.onFeedLoad = adaptFeedToCellControllers(forwardingTo: feedController, loader: imageLoader)
         presenter.loadingView = WeakRefVirtualProxy(refreshController)
