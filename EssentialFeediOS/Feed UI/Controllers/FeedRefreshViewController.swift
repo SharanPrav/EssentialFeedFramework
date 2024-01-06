@@ -1,6 +1,10 @@
 import UIKit
 import EssentialFeed
 
+protocol FeedRefreshViewControllerDelegate {
+    func didRequestFeedRefresh()
+}
+
 public final class FeedRefreshViewController: NSObject, FeedLoadingView {
     
     // It is supposed to be private(Set) but removed it because it has to be replaced with fake for testing.
@@ -8,14 +12,14 @@ public final class FeedRefreshViewController: NSObject, FeedLoadingView {
     //lazy var view = binded(UIRefreshControl())
     //private let viewModel: FeedViewModel
     
-    private let loadFeed: () -> Void
+    private let delegate: FeedRefreshViewControllerDelegate
 
-    init(loadFeed: @escaping () -> Void) {
-        self.loadFeed = loadFeed
+    init(delegate: FeedRefreshViewControllerDelegate) {
+        self.delegate = delegate
     }
         
     @objc func refresh() {
-        loadFeed()
+        delegate.didRequestFeedRefresh()
     }
     
     func display(_ viewModel: FeedLoadingViewModel) {
