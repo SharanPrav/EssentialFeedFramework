@@ -8,12 +8,24 @@ extension FeedViewController {
     
     func simulateAppearance() {
         if !isViewLoaded {
-            refreshController?.replaceRefreshControlWithFakeForiOS17Support()
+            replaceRefreshControlWithFakeForiOS17Support()
             loadViewIfNeeded()
         }
         
         beginAppearanceTransition(true, animated: false)
         endAppearanceTransition()
+    }
+    
+    func replaceRefreshControlWithFakeForiOS17Support() {
+        let fake = FakeRefreshControl()
+        
+        refreshControl?.allTargets.forEach { target in
+            refreshControl?.actions(forTarget: target, forControlEvent: .valueChanged)?.forEach { action in
+                fake.addTarget(target, action: Selector(action), for: .valueChanged)
+            }
+        }
+
+        refreshControl = fake
     }
     
     @discardableResult
@@ -61,5 +73,20 @@ extension FeedViewController {
         return 0
     }
 }
+
+private class FakeRefreshControl: UIRefreshControl {
+    private var _isRefreshing = false
+    override var isRefreshing: Bool {
+        _isRefreshing
+    }
+    
+    override func beginRefreshing() {
+        _isRefreshing = true
+    }
+    
+    override func endRefreshing() {
+        _isRefreshing = false
+    }
+}        
 
 
