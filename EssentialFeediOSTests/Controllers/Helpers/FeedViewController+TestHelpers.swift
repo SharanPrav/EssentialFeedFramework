@@ -8,8 +8,8 @@ extension FeedViewController {
     
     func simulateAppearance() {
         if !isViewLoaded {
-            replaceRefreshControlWithFakeForiOS17Support()
             loadViewIfNeeded()
+            replaceRefreshControlWithFakeForiOS17Support()
         }
         
         beginAppearanceTransition(true, animated: false)
