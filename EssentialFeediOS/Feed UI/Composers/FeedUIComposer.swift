@@ -4,7 +4,7 @@ import EssentialFeed
 public final class FeedUIComposer {
     private init() {}
     
-    public static func feedComposedWith(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
+    public static func feedComposedWith(feedLoader: RemoteFeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
         //        let feedViewModel = FeedViewModel(feedLoader: feedLoader)
         //        let refreshController = FeedRefreshViewController(viewModel: feedViewModel)
         let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader:
