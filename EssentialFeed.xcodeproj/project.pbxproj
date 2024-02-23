@@ -285,13 +285,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B60152352B5C675200207725 /* Feed Presentation */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Feed Presentation";
-			sourceTree = "<group>";
-		};
 		B60A0B472B339EAA00E9C84E /* View Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -355,6 +348,13 @@
 			isa = PBXGroup;
 			children = (
 				B6AA06602B6AEA200082C43A /* HTTPURLResponse+StatusCode.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		B6AA07312B88F5370082C43A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -576,8 +576,7 @@
 		B6D106F82B2A0E20001512F7 /* EssentialFeediOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				B60152352B5C675200207725 /* Feed Presentation */,
-				B6D107282B2F3A1A001512F7 /* Controllers */,
+				B6AA07312B88F5370082C43A /* Helpers */,
 				B6AA072F2B88EF140082C43A /* FeedSnapshotTests.swift */,
 			);
 			path = EssentialFeediOSTests;
@@ -602,13 +601,6 @@
 				B6AA064A2B617F060082C43A /* FeedErrorView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		B6D107282B2F3A1A001512F7 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Controllers;
 			sourceTree = "<group>";
 		};
 		B6D1073A2B2F6707001512F7 /* Feed UI */ = {
