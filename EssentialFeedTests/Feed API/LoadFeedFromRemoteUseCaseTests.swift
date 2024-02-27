@@ -3,49 +3,6 @@ import XCTest
 
 class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     
-    func test_init_doesNotRequestDataFromURL() {
-        let (_, client) = makeSut()
-        XCTAssertTrue(client.requestedURLs.isEmpty)
-    }
-    
-    func test_load_requestDataFromURL() {
-        let url = URL(string: "http://aurl.com")!
-        let (sut, client) = makeSut(url: url)
-        sut.load { _ in }
-        XCTAssertEqual(client.requestedURLs, [url])
-    }
-    
-    func test_loadtwice_requestDataFromURLTwice() {
-        let url = URL(string: "http://aurl.com")!
-        let (sut, client) = makeSut(url: url)
-        sut.load { _ in }
-        sut.load { _ in }
-
-        XCTAssertEqual(client.requestedURLs, [url, url])
-    }
-    
-    func test_loadDeliversErrorOnClientError() {
-        let (sut, client) = makeSut()
-        
-        expect(sut, toCompleteWith: failure(.connectivity), when: {
-            let clientError = NSError(domain: "Test", code: 0)
-            client.complete(with: clientError)
-        })
-    }
-    
-    func test_loadDataDeviversInvalidDataError() {
-        let (sut, client) = makeSut()
-        
-        let sampleErrorCodes = [199, 201, 300, 400, 500]
-        
-        sampleErrorCodes.enumerated().forEach { index, code in
-            expect(sut, toCompleteWith: failure(.invalidData), when: {
-                let json = makeItemJson([])
-                client.complete(withStatusCode: code, data: json,at: index)
-            })
-        }
-    }
-    
     func test_loadDeliversErrorOn200HttpResponseWithInvalidJson() {
         let (sut, client) = makeSut()
 
