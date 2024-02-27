@@ -1,10 +1,3 @@
-//
-//  LoadFeedFromCacheUseCaseTests.swift
-//  EssentialFeedTests
-//
-//  Created by Saranya Ravi on 01/11/2023.
-//
-
 import XCTest
 import EssentialFeed
 
@@ -137,7 +130,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
             let store = FeedStoreSpy()
             var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
 
-            var receivedResults = [LocalFeedLoader.Result]()
+            var receivedResults = [Result<[FeedImage], Error>]()
             sut?.load { receivedResults.append($0) }
 
             sut = nil
@@ -157,7 +150,8 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         return(sut, store)
     }
     
-    private func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: LocalFeedLoader.Result, when action: () -> Void) {
+    private func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: Result<[FeedImage], Error>, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+        
         let exp = expectation(description: "wait for load completion")
         
         sut.load { receivedResult in
