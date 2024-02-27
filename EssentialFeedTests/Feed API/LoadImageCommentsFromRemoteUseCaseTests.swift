@@ -66,16 +66,20 @@ class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
     func test_load_deliverysItemsOn2xxHTTPResponseWithJsonItems() {
         let (sut,client) = makeSUT()
         
-
-        let item1 = makeItem(id: UUID(), imageURL: URL(string: "http://aurl.com")!)
+        let item1 = makeItem(
+            id: UUID(),
+            message: "a message",
+            createdAt: (Date(timeIntervalSince1970: 1598627222), "2020-08-28T15:07:02+00:00"),
+            username: "a username")
         
-        let item2 = makeItem(id: UUID(),
-                             description: "a description",
-                             location: "a location",
-                             imageURL: URL(string: "http://another-url.com")!)
-      
+        let item2 = makeItem(
+            id: UUID(),
+            message: "another message",
+            createdAt: (Date(timeIntervalSince1970: 1577881882), "2020-01-01T12:31:22+00:00"),
+            username: "another username")
+        
         let items = [item1.model, item2.model]
-
+      
         let samples = [200, 201, 250, 280, 299]
         
         samples.enumerated().forEach { index, code in
@@ -114,15 +118,17 @@ class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
         return .failure(error)
     }
 
-    private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (model: FeedImage, json: [String: Any]) {
-        let item = FeedImage(id: id, description: description, location: location, url: imageURL)
+    private func makeItem(id: UUID, message: String, createdAt: (date: Date, iso8601String: String), username: String) -> (model: ImageComment, json: [String: Any]) {
+        let item = ImageComment(id: id, message: message, createdAt: createdAt.date, username: username)
 
-        let json = [
+        let json: [String: Any] = [
             "id": id.uuidString,
-            "description": description,
-            "location": location,
-            "image": imageURL.absoluteString
-        ].compactMapValues { $0 }
+            "message": message,
+            "created_at": createdAt.iso8601String,
+            "author": [
+                "username": username
+            ]
+        ]
 
         return (item, json)
     }
