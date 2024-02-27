@@ -27,7 +27,7 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     func test_loadDeliversErrorOnClientError() {
         let (sut, client) = makeSut()
         
-        expect(sut, toCompleteWithError: failure(.connectivity), when: {
+        expect(sut, toCompleteWith: failure(.connectivity), when: {
             let clientError = NSError(domain: "Test", code: 0)
             client.complete(with: clientError)
         })
@@ -39,7 +39,7 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         let sampleErrorCodes = [199, 201, 300, 400, 500]
         
         sampleErrorCodes.enumerated().forEach { index, code in
-            expect(sut, toCompleteWithError: failure(.invalidData), when: {
+            expect(sut, toCompleteWith: failure(.invalidData), when: {
                 let json = makeItemJson([])
                 client.complete(withStatusCode: code, data: json,at: index)
             })
@@ -49,7 +49,7 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     func test_loadDeliversErrorOn200HttpResponseWithInvalidJson() {
         let (sut, client) = makeSut()
 
-        expect(sut, toCompleteWithError: failure(.invalidData), when: {
+        expect(sut, toCompleteWith: failure(.invalidData), when: {
             let invalidJSON = Data("invalid json".utf8)
             client.complete(withStatusCode: 200, data: invalidJSON)
         })
@@ -58,7 +58,7 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
     func test_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
         let (sut, client) = makeSut()
         
-        expect(sut, toCompleteWithError: failure(.invalidData), when: {
+        expect(sut, toCompleteWith: failure(.invalidData), when: {
             let emptyListJSON = Data("{\"Items\": []}".utf8)
             client.complete(withStatusCode: 200, data: emptyListJSON)
         })
@@ -75,7 +75,7 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
                              location: "a location",
                              imageURL: URL(string: "http://another-url.com")!)
       
-        expect(sut, toCompleteWithError: .success([item1.model, item2.model])) {
+        expect(sut, toCompleteWith: .success([item1.model, item2.model])) {
             let json = makeItemJson([item1.json, item2.json])
             client.complete(withStatusCode: 200, data: json)
         }
@@ -117,7 +117,7 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         return .failure(error)
     }
     
-    private func expect(_ sut: RemoteFeedLoader, toCompleteWithError expectedResult: RemoteFeedLoader.Result, when action: ()-> Void, file: StaticString = #filePath, line: UInt = #line) {
+    private func expect(_ sut: RemoteFeedLoader, toCompleteWith expectedResult: RemoteFeedLoader.Result, when action: ()-> Void, file: StaticString = #filePath, line: UInt = #line) {
         
         let exp = expectation(description: "wait for load completion")
         
