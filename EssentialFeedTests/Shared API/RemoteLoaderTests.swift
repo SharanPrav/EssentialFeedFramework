@@ -4,28 +4,28 @@ import XCTest
 class RemoteLoaderTests: XCTestCase {
     
     func test_init_doesNotRequestDataFromURL() {
-        let (_, client) = makeSut()
+        let (_, client) = makeSUT()
         XCTAssertTrue(client.requestedURLs.isEmpty)
     }
     
     func test_load_requestDataFromURL() {
         let url = URL(string: "http://aurl.com")!
-        let (sut, client) = makeSut(url: url)
+        let (sut, client) = makeSUT(url: url)
         sut.load { _ in }
         XCTAssertEqual(client.requestedURLs, [url])
     }
     
     func test_loadtwice_requestDataFromURLTwice() {
         let url = URL(string: "http://aurl.com")!
-        let (sut, client) = makeSut(url: url)
+        let (sut, client) = makeSUT(url: url)
         sut.load { _ in }
         sut.load { _ in }
-
+        
         XCTAssertEqual(client.requestedURLs, [url, url])
     }
     
     func test_loadDeliversErrorOnClientError() {
-        let (sut, client) = makeSut()
+        let (sut, client) = makeSUT()
         
         expect(sut, toCompleteWith: failure(.connectivity), when: {
             let clientError = NSError(domain: "Test", code: 0)
@@ -33,18 +33,25 @@ class RemoteLoaderTests: XCTestCase {
         })
     }
     
-    func test_load_shouldNotDeliverResultWhenClientIsDeallocated() {
-        let url = URL(string: "http://aurl.com")!
-        let client = HTTPClientSpy()
-        var sut: RemoteFeedLoader? = RemoteFeedLoader(url: url, client: client)
+    func test_load_deliversErrorOnMapperError() {
+        let (sut, client) = makeSUT(mapper: { _, _ in
+            throw anyError()
+        })
         
-        var capturedResults = [RemoteFeedLoader.Result]()
-        sut?.load { capturedResults.append( $0)}
+        expect(sut, toCompleteWith: failure(.invalidData), when: {
+            client.complete(withStatusCode: 200, data: anyData())
+        })
+    }
+    
+    func test_load_deliversMappedResource() {
+        let resource = "a resource"
+        let (sut, client) = makeSUT(mapper: { data, _ in
+            String(data: data, encoding: .utf8)!
+        })
         
-        sut = nil
-        client.complete(withStatusCode: 200, data: makeItemJson([]))
-        
-        XCTAssertTrue(capturedResults.isEmpty)
+        expect(sut, toCompleteWith: .success(resource), when: {
+            client.complete(withStatusCode: 200, data: Data(resource.utf8))
+        })
     }
     
     // MARK: Helpers
@@ -65,19 +72,19 @@ class RemoteLoaderTests: XCTestCase {
         return(item, json)
     }
     
-    private func failure(_ error: RemoteFeedLoader.Error) -> RemoteFeedLoader.Result {
+    private func failure(_ error: RemoteLoader<String>.Error) -> RemoteLoader<String>.Result {
         return .failure(error)
     }
     
-    private func expect(_ sut: RemoteFeedLoader, toCompleteWith expectedResult: RemoteFeedLoader.Result, when action: ()-> Void, file: StaticString = #filePath, line: UInt = #line) {
-        
+    private func expect(_ sut: RemoteLoader<String>, toCompleteWith expectedResult: RemoteLoader<String>.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
+
         let exp = expectation(description: "wait for load completion")
         
         sut.load { receivedResult in
             switch(receivedResult, expectedResult) {
             case let(.success(recivedItems), .success(expectedItems)):
                 XCTAssertEqual(recivedItems, expectedItems, file: file, line: line)
-            case let(.failure(receivedError as RemoteFeedLoader.Error), .failure(expectedError as RemoteFeedLoader.Error)):
+            case let (.failure(receivedError as RemoteLoader<String>.Error), .failure(expectedError as RemoteLoader<String>.Error)):
                 XCTAssertEqual(receivedError, expectedError, file: file, line: line)
             default:
                 XCTFail("Expected result \(expectedResult) but got \(receivedResult) instead", file: file, line: line)
@@ -90,9 +97,14 @@ class RemoteLoaderTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
-    private func makeSut(url: URL = URL(string: "http://aurl.com")!, file: StaticString = #filePath, line: UInt = #line) -> (sut: RemoteFeedLoader, client: HTTPClientSpy) {
+    private func makeSUT(
+            url: URL = URL(string: "https://a-url.com")!,
+            mapper: @escaping RemoteLoader<String>.Mapper = { _, _ in "any" },
+            file: StaticString = #file,
+            line: UInt = #line
+        ) -> (sut: RemoteLoader<String>, client: HTTPClientSpy) {
         let client = HTTPClientSpy()
-        let sut = RemoteFeedLoader(url: url, client: client)
+        let sut = RemoteLoader(url: url, client: client, mapper: mapper)
         trackForMemoryLeak(instance: sut, file: file, line: line)
         trackForMemoryLeak(instance: client, file: file, line: line)
         return (sut, client)
