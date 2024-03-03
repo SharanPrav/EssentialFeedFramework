@@ -2,99 +2,86 @@ import XCTest
 import EssentialFeed
 
 class LoadResourcePresenterTests: XCTestCase {
-
+ 
     func test_init_doesNotSendMessagesToView() {
         let (_, view) = makeSUT()
 
         XCTAssertTrue(view.messages.isEmpty, "Expected no view messages")
     }
-    
-    func test_didStartLoadingImageData_displaysLoadingImage() {
-        let (sut, view) = makeSUT()
-        let image = uniqueImage()
-        
-        sut.didStartLoadingImageData(for: image)
-        
-        let message = view.messages.first
-        XCTAssertEqual(view.messages.count, 1)
-        XCTAssertEqual(message?.description, image.description)
-        XCTAssertEqual(message?.location, image.location)
-        XCTAssertEqual(message?.isLoading, true)
-        XCTAssertEqual(message?.shouldRetry, false)
-        XCTAssertNil(message?.image)
-    }
-    
-    func test_didFinishLoadingImageData_displaysRetryOnFailedImageTransformation() {
-        let (sut, view) = makeSUT(imageTransformer: fail)
-        let image = uniqueImage()
-        
-        sut.didFinishLoadingImageData(with: Data(), for: image)
-        
-        let message = view.messages.first
-        XCTAssertEqual(view.messages.count, 1)
-        XCTAssertEqual(message?.description, image.description)
-        XCTAssertEqual(message?.location, image.location)
-        XCTAssertEqual(message?.isLoading, false)
-        XCTAssertEqual(message?.shouldRetry, true)
-        XCTAssertNil(message?.image)
-    }
 
-    func test_didFinishLoadingImageData_displaysImageOnSuccessfulTransformation() {
-        let image = uniqueImage()
-        let transformedData = AnyImage()
-        let (sut, view) = makeSUT(imageTransformer: { _ in transformedData })
-        
-        sut.didFinishLoadingImageData(with: Data(), for: image)
-        
-        let message = view.messages.first
-        XCTAssertEqual(view.messages.count, 1)
-        XCTAssertEqual(message?.description, image.description)
-        XCTAssertEqual(message?.location, image.location)
-        XCTAssertEqual(message?.isLoading, false)
-        XCTAssertEqual(message?.shouldRetry, false)
-        XCTAssertEqual(message?.image, transformedData)
-    }
-    
-    func test_didFinishLoadingImageDataWithError_displaysRetry() {
-        let image = uniqueImage()
+    func test_didStartLoadingFeed_displaysNoErrorMessageAndStartsLoading() {
         let (sut, view) = makeSUT()
         
-        sut.didFinishLoadingImageData(with: anyError(), for: image)
+        sut.didStartLoadingFeed()
         
-        let message = view.messages.first
-        XCTAssertEqual(view.messages.count, 1)
-        XCTAssertEqual(message?.description, image.description)
-        XCTAssertEqual(message?.location, image.location)
-        XCTAssertEqual(message?.isLoading, false)
-        XCTAssertEqual(message?.shouldRetry, true)
-        XCTAssertNil(message?.image)
+        XCTAssertEqual(view.messages, [
+            .display(errorMessage: .none),
+            .display(isLoading: true)
+        ])
+    }
+    
+    func test_didFinishLoadingFeed_displaysFeedAndStopsLoading() {
+        let (sut, view) = makeSUT()
+        let feed = uniqueImageFeed().models
+        
+        sut.didFinishLoadingFeed(with: feed)
+        
+        XCTAssertEqual(view.messages, [
+            .display(feed: feed),
+            .display(isLoading: false)
+        ])
+    }
+    
+    func test_didFinishLoadingFeedWithError_displaysLocalizedErrorMessageAndStopsLoading() {
+        let (sut, view) = makeSUT()
+        
+         sut.didFinishLoadingFeed(with: anyError())
+        
+        XCTAssertEqual(view.messages, [
+            .display(errorMessage: localized("FEED_VIEW_CONNECTION_ERROR")),
+            .display(isLoading: false)
+        ])
     }
 
     // MARK: - Helpers
-
-    private func makeSUT(
-        imageTransformer: @escaping (Data) -> AnyImage? = { _ in nil },
-        file: StaticString = #file,
-        line: UInt = #line
-    ) -> (sut: FeedImagePresenter<ViewSpy, AnyImage>, view: ViewSpy) {
+    
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedPresenter, view: ViewSpy) {
         let view = ViewSpy()
-        let sut = FeedImagePresenter(view: view, imageTransformer: imageTransformer)
+        let sut = FeedPresenter(feedView: view, loadingView: view, errorView: view)
         trackForMemoryLeak(instance: view, file: file, line: line)
         trackForMemoryLeak(instance: sut, file: file, line: line)
         return (sut, view)
     }
     
-    private var fail: (Data) -> AnyImage? {
-        return { _ in nil }
+    private func localized(_ key: String, file: StaticString = #file, line: UInt = #line) -> String {
+        let table = "Feed"
+        let bundle = Bundle(for: FeedPresenter.self)
+        let value = bundle.localizedString(forKey: key, value: nil, table: table)
+        if value == key {
+            XCTFail("Missing localized string for key: \(key) in table: \(table)", file: file, line: line)
+        }
+        return value
     }
 
-    private struct AnyImage: Equatable {}
-
-    private class ViewSpy: FeedImageView {
-        private(set) var messages = [FeedImageViewModel<AnyImage>]()
+    private class ViewSpy: FeedView, FeedLoadingView, FeedErrorView {
+        enum Message: Hashable {
+            case display(errorMessage: String?)
+            case display(isLoading: Bool)
+            case display(feed: [FeedImage])
+        }
         
-        func display(_ model: FeedImageViewModel<AnyImage>) {
-            messages.append(model)
+        private(set) var messages = Set<Message>()
+
+        func display(_ viewModel: FeedErrorViewModel) {
+            messages.insert(.display(errorMessage: viewModel.message))
+        }
+        
+        func display(_ viewModel: FeedLoadingViewModel) {
+            messages.insert(.display(isLoading: viewModel.isLoading))
+        }
+        
+        func display(_ viewModel: FeedViewModel) {
+            messages.insert(.display(feed: viewModel.feed))
         }
     }
 }
