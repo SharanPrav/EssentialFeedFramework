@@ -5,5 +5,5 @@
   Created by Saranya Ravi on 24/01/2024.
   
 */
-"FEED_VIEW_TITLE" = "Meu Feed";
-"GENERIC_CONNECTION_ERROR" = "Não foi possível conectar com o servidor";
+"FEED_VIEW_TITLE" = "My Feed";
+"GENERIC_CONNECTION_ERROR" = "Couldn't connect to server";
