@@ -30,6 +30,7 @@ public final class ImageCommentsPresenter {
            locale: Locale = .current
        ) -> ImageCommentsViewModel {
         let formatter = RelativeDateTimeFormatter()
+        formatter.locale = locale
         
         return ImageCommentsViewModel(comments: comments.map { comment in
             ImageCommentViewModel(
