@@ -33,6 +33,7 @@
 		B687F4F02BA1BFB200CF95CF /* ImageCommentsSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B687F4EF2BA1BFB200CF95CF /* ImageCommentsSnapshotTests.swift */; };
 		B687F4F42BA1C09300CF95CF /* IMAGE_COMMENTS_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = B687F4F12BA1C09300CF95CF /* IMAGE_COMMENTS_dark.png */; };
 		B687F4F52BA1C09300CF95CF /* IMAGE_COMMENTS_light.png in Resources */ = {isa = PBXBuildFile; fileRef = B687F4F22BA1C09300CF95CF /* IMAGE_COMMENTS_light.png */; };
+		B687F4F72BA1F60400CF95CF /* CellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B687F4F62BA1F60400CF95CF /* CellController.swift */; };
 		B693BD4B2B98A72F00C64B1F /* ResourceLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B693BD4A2B98A72F00C64B1F /* ResourceLoadingView.swift */; };
 		B6AA06362B6165820082C43A /* FeedPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60152402B5D66A100207725 /* FeedPresenterTests.swift */; };
 		B6AA06402B616F010082C43A /* FeedPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AA063F2B616F010082C43A /* FeedPresenter.swift */; };
@@ -202,6 +203,7 @@
 		B687F4EF2BA1BFB200CF95CF /* ImageCommentsSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsSnapshotTests.swift; sourceTree = "<group>"; };
 		B687F4F12BA1C09300CF95CF /* IMAGE_COMMENTS_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMAGE_COMMENTS_dark.png; sourceTree = "<group>"; };
 		B687F4F22BA1C09300CF95CF /* IMAGE_COMMENTS_light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMAGE_COMMENTS_light.png; sourceTree = "<group>"; };
+		B687F4F62BA1F60400CF95CF /* CellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellController.swift; sourceTree = "<group>"; };
 		B693BD4A2B98A72F00C64B1F /* ResourceLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceLoadingView.swift; sourceTree = "<group>"; };
 		B6AA063A2B6166C60082C43A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Feed.strings; sourceTree = "<group>"; };
 		B6AA063C2B6166C70082C43A /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Feed.strings; sourceTree = "<group>"; };
@@ -434,6 +436,7 @@
 			isa = PBXGroup;
 			children = (
 				B6D1070B2B2E0C0B001512F7 /* ListViewController.swift */,
+				B687F4F62BA1F60400CF95CF /* CellController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1268,6 +1271,7 @@
 				B6AA064E2B61AE3F0082C43A /* UIRefreshControl+Helpers.swift in Sources */,
 				B687F4E72BA1BE1200CF95CF /* ImageCommentCellController.swift in Sources */,
 				B6D107132B2E42E8001512F7 /* UIView+Shimmering.swift in Sources */,
+				B687F4F72BA1F60400CF95CF /* CellController.swift in Sources */,
 				B6D107462B2F7ED7001512F7 /* FeedImageCellController.swift .swift in Sources */,
 				B6AA064B2B617F060082C43A /* ErrorView.swift in Sources */,
 				B687F4EB2BA1BEE400CF95CF /* ImageCommentCell.swift in Sources */,
