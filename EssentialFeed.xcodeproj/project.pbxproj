@@ -433,7 +433,6 @@
 			isa = PBXGroup;
 			children = (
 				B6AA064A2B617F060082C43A /* ErrorView.swift */,
-				B6B42CB82BB45A5D00720DF6 /* LoadMoreCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -914,6 +913,7 @@
 			children = (
 				B6AA064C2B61A4290082C43A /* Helpers */,
 				B6D1070E2B2E0D25001512F7 /* FeedImageCell.swift */,
+				B6B42CB82BB45A5D00720DF6 /* LoadMoreCell.swift */,
 				B60152222B58446900207725 /* Feed.storyboard */,
 				B60152242B586A2B00207725 /* Feed.xcassets */,
 			);
