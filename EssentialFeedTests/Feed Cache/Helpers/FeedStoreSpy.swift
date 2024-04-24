@@ -10,10 +10,6 @@ import EssentialFeed
 
 class FeedStoreSpy: FeedStore {
     
-    typealias DeletionCompletion = (DeletionResult) -> Void
-    typealias InsertionCompletion = (InsertionResult) -> Void
-    typealias RetreivalCompletion = (RetrievalResult) -> Void
-    
     enum ReceivedMessage: Equatable {
         case deleteCachedFeed
         case insert([LocalFeedImage], Date)
